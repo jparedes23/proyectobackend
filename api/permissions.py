@@ -25,3 +25,7 @@ class SoloClientes(BasePermission):
             return True
         else:
             return False
+
+
+
+
