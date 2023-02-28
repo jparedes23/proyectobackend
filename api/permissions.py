@@ -1,4 +1,4 @@
-from rest_framework.permissions import BasePermission
+from rest_framework.permissions import BasePermission, SAFE_METHODS
 from .models import UsuarioModel
 
 class SoloAdministradores(BasePermission):
@@ -7,7 +7,8 @@ class SoloAdministradores(BasePermission):
     def has_permission(self, request, view):
         print(request.user)
         usuario:UsuarioModel = request.user
-
+        if request.method in SAFE_METHODS:
+            return True
         print(request.auth)
         print(usuario.tipoUsuario)
         if usuario.tipoUsuario == 'ADMINISTRADOR':

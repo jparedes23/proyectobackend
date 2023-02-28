@@ -5,20 +5,48 @@ from .auth_manager import usuarioManager
 
 
 class Productos(models.Model):
+    # tipokekeopciones = (
+    #     ('Vainilla', 'Vainilla'),
+    #     ('Chocolate', 'Chocolate'),
+    #     ('Marmoleado', 'Marmoleado'),
+    #     ('Cake de novia', 'Cake de novia'),
+    # )
+    # tiporellenoopciones = (
+    #     ('Manjar', 'Manjar'),
+    #     ('Fudge', 'Fudge'),
+    #     ('Mermelada', 'Mermelada'),
+    #     ('Crema pastelera', 'Crema pastelera'),
+    # )
     id = models.AutoField(primary_key=True, null=False)
     nombre = models.CharField(max_length=50, unique=True)
-
+    precio = models.FloatField()
+    descripcion = models.TextField()
+    imagen = models.TextField()
+    disponibilidad = models.BooleanField(default=True)
+    # tipokeke = models.CharField(
+    #     max_length=20,
+    #     choices= tipokekeopciones,
+    #     default='Vainilla'
+    # )
+    # tiporelleno = models.CharField(
+    #     max_length=20,
+    #     choices= tiporellenoopciones,
+    #     default='Manjar'
+    # )
+    
     class Meta:
         db_table ='productos'
+
 
 
 class Categorias(models.Model):
     id = models.AutoField(primary_key=True, null=False)
     nombre = models.CharField(max_length=50, unique=True) 
-    products = models.ManyToManyField(Productos)
 
     class Meta:
         db_table ='categorias'
+        # ordering = ['nombre', 'id']
+
 
 class ProductosCategorias(models.Model):
     id = models.AutoField(primary_key=True, null=False)
@@ -35,8 +63,8 @@ class UsuarioModel(AbstractBaseUser, PermissionsMixin):
     correo = models.EmailField(max_length=100, unique=True, null=False)
     password = models.TextField(null=False)
     tipoUsuario = models.CharField(max_length=40, choices=[
-       ('ADMIN', 'ADMINISTRADOR'),
-       ('CLIENTE','CLIENTE')
+       ('ADMINISTRADOR', 'ADMINISTRADOR'),
+       ('CLIENTE','CLIENTE'), 
     ])
 
     is_staff = models.BooleanField(default=False)
@@ -47,7 +75,7 @@ class UsuarioModel(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS =['nombre', 'apellido', 'tipoUsuario']
 
 
-    object = usuarioManager()
+    objects = usuarioManager()
     class Meta:
         db_table= 'usuarios'
 
